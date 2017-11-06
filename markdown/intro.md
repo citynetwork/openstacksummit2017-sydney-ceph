@@ -22,3 +22,8 @@ combination. This is from the OpenStack User Survey from April 2017,
 showing that Ceph RBD is the single most popular backend, by a large
 margin, for Cinder storage. (The User Survey doesn’t come with any
 such stats for Glance, or for Nova ephemeral storage.)
+
+
+### Glance
+### Cinder
+### Nova
