@@ -5,10 +5,21 @@ OpenStack Summit Sydney 2017
 * * *
 [florian@citynetwork.eu]() | [xahteiwi](https://twitter.com/xahteiwi)
 
-Note: Add introductory remarks
+Note: Good morning! My name’s Florian, I run professional services &
+education at City Network — some of you may know me from prior Summits
+when I presented as CEO and Principal Consultant at hastexo. We’ve
+just last montth been acquired by City Network and I’m happy that this
+is already the second time I get to present in my new role in a
+gorgeous City – I was at OpenStack Days Nordic in Copenhagen just two
+weeks ago, and now the Summit here in Sydney. This is my 8th Summit
+and my 16th presentation, and I *finally* get to have a full length
+talk about...
 
 
 ![Ceph logo](images/ceph-logo.svg)
+
+Note:
+... and ...
 
 
 ![OpenStack logo](images/openstack-logo.svg)
