@@ -196,44 +196,12 @@ those OSDs separately. The simplest and easiest way to do that is to
 create a separate CRUSH `root` in addition to the normally configured
 `default` root.
 
-For example, you could set up your CRUSH hierarchy as follows:
 
+### Device classes
+(Luminous)
 
-```
-ID WEIGHT  TYPE NAME         UP/DOWN REWEIGHT PRIMARY-AFFINITY
-- 
--1 4.85994 root default
--2 1.61998     host elk
- 0 0.53999         osd.0          up  1.00000          1.00000 
- 1 0.53999         osd.1          up  1.00000          1.00000 
- 2 0.53999         osd.2          up  1.00000          1.00000 
--3 1.61998     host moose
- 3 0.53999         osd.3          up  1.00000          1.00000 
- 4 0.53999         osd.4          up  1.00000          1.00000 
- 5 0.53999         osd.5          up  1.00000          1.00000 
--4 1.61998     host reindeer
- 6 0.53999         osd.6          up  1.00000          1.00000 
- 7 0.53999         osd.7          up  1.00000          1.00000 
- 8 0.53999         osd.8          up  1.00000          1.00000
--5 4.85994 root highperf
--6 1.61998     host elk-ssd
- 9 0.53999         osd.9          up  1.00000          1.00000 
-10 0.53999         osd.10         up  1.00000          1.00000 
-11 0.53999         osd.11         up  1.00000          1.00000 
--7 1.61998     host moose-ssd
-12 0.53999         osd.12         up  1.00000          1.00000 
-13 0.53999         osd.13         up  1.00000          1.00000 
-14 0.53999         osd.14         up  1.00000          1.00000 
--8 1.61998     host reindeer-ssd
-15 0.53999         osd.15         up  1.00000          1.00000 
-16 0.53999         osd.16         up  1.00000          1.00000 
-17 0.53999         osd.17         up  1.00000          1.00000
-```
-
-Note:
-In the example above, OSDs 0-8 are assigned to the `default` root,
-whereas OSDs 9-17 (our SSDs) belong to the root `highperf`. We can now
-create two separate CRUSH rulesets:
+Note: In Luminous, this becomes much easier with the advent of
+**device classes**, which allow us to greatly simplify our CRUSH rulesets.
 
 
 ```
@@ -264,6 +232,29 @@ The default ruleset, `replicated_ruleset`, picks OSDs from the
 means it covers only OSDs in the `highperf` root.
 
 
+```
+rule replicated_ruleset {
+	ruleset 0
+	type replicated
+	min_size 1
+	max_size 10
+	step take default class hdd
+	step chooseleaf firstn 0 type host
+	step emit
+}
+
+rule highperf_ruleset {
+	ruleset 1
+	type replicated
+	min_size 1
+	max_size 10
+	step take default class ssd
+	step chooseleaf firstn 0 type host
+	step emit
+}
+```
+
+
 ### Individual pools with all-flash rulesets
 
 Note:
@@ -271,8 +262,14 @@ Assigning individual pools to a new CRUSH ruleset (and hence, to a
 whole different set of OSDs) is a matter of issuing a single command:
 
 
+Jewel:
 ```
 ceph osd pool set <name> crush_ruleset <number>
+```
+
+Luminous:
+```
+ceph osd pool set <name> crush_rule <number>
 ```
 
 Note:
